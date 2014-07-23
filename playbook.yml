@@ -41,6 +41,10 @@
       sudo: yes
       copy: src=info.php dest=/var/www/html/info.php mode=0664
 
+    - name: install test scrip
+      sudo: yes
+      copy: src=test_hashes.php dest=/var/www/html/test_hashes.php mode=0664
+
   handlers:
     - name: start apache
       sudo: yes
