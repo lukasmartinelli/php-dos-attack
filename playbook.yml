@@ -1,0 +1,47 @@
+---
+- hosts: all
+  tasks:
+    - name: install apache
+      sudo: yes
+      apt: name=apache2 state=present update_cache=yes
+
+    - name: install php build requirements 
+      sudo: yes
+      apt: name={{item}} state=present update_cache=yes
+      with_items:
+       - autoconf
+       - libxml2-dev
+       - automake
+       - libtool
+       - re2c
+       - flex
+       - bison
+
+     #- name: add repo for old php
+     # sudo: yes
+     # apt_repository: repo='ppa:andphe/php'
+
+    - name: install old php
+      script: install_php.sh
+
+    #- name: install old php
+    #  sudo: yes
+    #  apt: name=php4 state=present
+
+    - name: install apache php module
+      sudo: yes
+      apt: name=libapache2-mod-php5 state=present
+      notify: start apache
+
+    - name: install php script
+      sudo: yes
+      copy: src=index.php dest=/var/www/index.php mode=0664
+
+    - name: install php info
+      sudo: yes
+      copy: src=info.php dest=/var/www/index.php mode=0664
+
+  handlers:
+    - name: start apache
+      sudo: yes
+      service: name=apache2 state=running enabled=yes
