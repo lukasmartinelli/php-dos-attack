@@ -6,7 +6,7 @@ import sys
 
 if __name__ == "__main__":
     host = "http://localhost:8080"
-    payload = {}
+    payload = {"name": "lukas", "email": "me@lukasmartinelli.ch"}
     count = int(sys.argv[1])
 
     with open("hashes.txt") as fh:
@@ -22,12 +22,18 @@ if __name__ == "__main__":
         print("POST {0}".format(host))
         reqs.append(grequests.post(url, data=payload))
 
+    successful_responses = 0
+    failed_responses = 0
     start = time.time()
-    responses = grequests.map(reqs)
+    for resp in grequests.imap(reqs, stream=False, size=100):
+        if resp.status_code == 200:
+            successful_responses += 1
+        else:
+            failed_responses += 1
+        resp.close()
+
     end = time.time()
 
     print("Made {0} requests in {1}ms".format(count, end))
-    successful_responses = [resp for resp in responses if resp.status_code == 200]
-    failed_responses = [resp for resp in responses if resp.status_code != 200]
-    print("Successful: {0}".format(len(successful_responses)))
-    print("Failed: {0}".format(len(failed_responses)))
+    print("Successful: {0}".format(successful_responses))
+    print("Failed: {0}".format((failed_responses)))

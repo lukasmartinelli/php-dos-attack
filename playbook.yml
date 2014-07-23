@@ -5,7 +5,7 @@
       sudo: yes
       apt: name=apache2 state=present update_cache=yes
 
-    - name: install php build requirements 
+    - name: install php build requirements
       sudo: yes
       apt: name={{item}} state=present update_cache=yes
       with_items:
@@ -21,8 +21,8 @@
      # sudo: yes
      # apt_repository: repo='ppa:andphe/php'
 
-    - name: install old php
-      script: install_php.sh
+     #- name: install old php
+     # script: install_php.sh
 
     #- name: install old php
     #  sudo: yes
@@ -35,11 +35,11 @@
 
     - name: install php script
       sudo: yes
-      copy: src=index.php dest=/var/www/index.php mode=0664
+      copy: src=index.php dest=/var/www/html/index.php mode=0664
 
     - name: install php info
       sudo: yes
-      copy: src=info.php dest=/var/www/index.php mode=0664
+      copy: src=info.php dest=/var/www/html/info.php mode=0664
 
   handlers:
     - name: start apache
