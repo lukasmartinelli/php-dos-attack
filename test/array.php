@@ -4,12 +4,10 @@
 # Chaos Pres: http://events.ccc.de/congress/2011/Fahrplan/attachments/2007_28C3_Effective_DoS_on_web_application_platforms.pdf
 
 <?php
-    $filename = 'hashes.txt';
+    $filename = $argv[1];
     $file = file_get_contents($filename);
     $hashes = explode("\n", $file);
     $size = count($hashes);
-
-    var_dump($hashes);
 
     $startTime = microtime(true);
     $array = array();

@@ -12,8 +12,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.define "trusty" do |trusty|
       trusty.vm.box = "ubuntu/trusty64"
       trusty.vm.network "forwarded_port", guest: 80, host: 8080
+      trusty.vm.synced_folder "server/", "/var/www/html"
   end
-  
+
   config.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbook.yml"
   end
