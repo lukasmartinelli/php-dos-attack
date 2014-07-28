@@ -21,9 +21,16 @@ from collections import OrderedDict
 import grequests
 from docopt import docopt
 
-def prepare_payload(collision_file, collide=True):
+def prepare_payload(collision_file, collide):
     # Payload has to contain the correct names
     # otherwise the request will fail because of an index out of bounds errors
+    def collide_text():
+        if collide:
+            return "bad"
+        else:
+            return "good"
+
+    print("Creating {0} payload".format(collide_text()))
     payload = {"name": "", "email": ""}
     with open(collision_file) as fh:
         for i, line in enumerate(fh):
@@ -59,13 +66,6 @@ if __name__ == "__main__":
                               collide=not arguments["--no-collide"])
     reqs = []
 
-    def collide_text():
-        if arguments["--no-collide"]:
-            return "good"
-        else:
-            return "bad"
-
-    print("Creating {0} payload".format(collide_text()))
     for i in range(0, count):
         if arguments["--shuffle"] and i % 10 == 0:
             payload = shuffle_payload(payload)

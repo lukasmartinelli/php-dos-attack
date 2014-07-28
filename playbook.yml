@@ -17,8 +17,12 @@
        - flex
        - bison
 
-    - name: install old php
-      script: install_php.sh
+    #- name: install php
+    #  script: install_php.sh
+
+    - name: install php
+      sudo: yes
+      apt: name=php5 state=present
 
     - name: install apache php module
       sudo: yes

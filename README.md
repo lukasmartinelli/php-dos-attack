@@ -9,6 +9,7 @@ Start server
 ------------
 
 Download and start the VM:
+
 ```
 vagrant up
 ```
@@ -18,13 +19,33 @@ Therefore you can visit your site at `localhost:8080`.
 
 Run a Hash Collision Attack
 ---------------------------
+Install the requirements:
 
-The `attack.py` script will make POST requests with all the collision in `hashes.txt`.
-
-Instruct the attack.py to make 100 requests to `http://localhost:8080` with the
-collision values in `hashes.txt` and using `form` fields:
 ```
-python attack.py http://localhost:8080 hashes.txt 100 form
+pip install -r requirements.txt
+```
+
+The `attack.py` script will make parallel requests (amount can be specified with --count`)
+to a URL endpoint. It reads collisions from given text file and tries to do a
+Hash collision Attack with them. You can set the attack type to either use form fields
+or a json map.
+
+Make one request to the webserver in the VM.
+
+```
+python attack.py http://localhost:8080/index.php hashes.txt
+```
+
+Make a normal request to compare with the collision attack.
+
+```
+python attack.py http://localhost:8080/index.php hashes.txt --no-collide
+```
+
+Make 100 requests to a fake JSON api.
+
+```
+python attack.py http://localhost:8080/index.php hashes.txt --count=100 --type=json
 ```
 
 Test PHP vulnerabilities to Collision Attacks
@@ -34,6 +55,7 @@ In the directory `test` there are PHP scripts that demonstrate vulnerabilities o
 functions that use the PHP map.
 
 Run a script with `hashes.txt`:
+
 ```
 php array.php hashes.txt
 ```
