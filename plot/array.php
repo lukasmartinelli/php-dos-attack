@@ -25,7 +25,7 @@
     }
 
     echo 'elements', 'evilTime', 'goodTime', "\r\n";
-    for($i = 0; $i < count($lines); $i++) {
+    for($i = 0; $i < count($lines); $i+=50) {
         $keys = array_slice($lines, 0, $i);
         $evilTime = measureEvilElements($keys);
         $goodTime = measureGoodElements($keys);

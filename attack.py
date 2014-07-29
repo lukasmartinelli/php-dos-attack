@@ -55,6 +55,17 @@ def attack_with_json_api(url, payload):
     return grequests.post(url, data=json.dumps(payload))
 
 
+def make_requests(reqs):
+    successful_responses = 0
+    failed_responses = 0
+    for resp in grequests.imap(reqs, stream=False, size=100):
+        if resp.status_code == 200:
+            successful_responses += 1
+        else:
+            failed_responses += 1
+        resp.close()
+    return successful_responses, failed_responses
+
 if __name__ == "__main__":
     arguments = docopt(__doc__)
     url = arguments["<url>"]
@@ -75,18 +86,10 @@ if __name__ == "__main__":
             req = attack_with_json_api(url, payload)
         reqs.append(req)
 
-    successful_responses = 0
-    failed_responses = 0
-
     print("Sent {0} {1} requests to {2} ".format(count, attack_type, url))
-    start = time.time()
     print("Waiting for response of all requests...")
-    for resp in grequests.imap(reqs, stream=False, size=100):
-        if resp.status_code == 200:
-            successful_responses += 1
-        else:
-            failed_responses += 1
-        resp.close()
+    start = time.time()
+    successful_responses, failed_responses = make_requests(reqs)
     end = time.time()
     request_time = end - start
     print("Total time: {0} seconds".format(request_time))
