@@ -3,7 +3,7 @@
     $filename = $argv[1];
     $file = file_get_contents($filename);
     $lines = explode("\n", $file);
-
+    $step = 10;
     function measureEvilElements($elements) {
         $array = array();
         foreach($elements as $key) {
@@ -31,7 +31,13 @@
     }
 
     echo 'elements', 'evilTime', 'goodTime', "\r\n";
-    for($i = 0; $i < count($lines); $i++) {
+    for($i = 0; $i < count($lines); $i+=$step) {
+        if($step < 1000) {
+            $step += 10;
+        }
+        else {
+            $step = 1000;
+        }
         $keys = array_slice($lines, 0, $i);
         $evilTime = measureEvilElements($keys);
         $goodTime = measureGoodElements($keys);
