@@ -4,6 +4,7 @@ Simulate Hash Collision Attack on a PHP Server
 [Vagrant](https://www.vagrantup.com/downloads) is used to automatically create
 a PHP webserver VM.
 Vagrant will keep the `server` folder in sync with `/var/www/html` for easy testing.
+You also need [Ansible](http://docs.ansible.com/intro_installation.html) to provision the server.
 
 Start server
 ------------
