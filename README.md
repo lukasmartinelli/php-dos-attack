@@ -147,3 +147,4 @@ elements,evilTime,goodTime
 4500,0.099925994873047,0.0014569759368896
 ```
 
+![json_decode time compared for collisions](/plot/json_decode_time.png)
