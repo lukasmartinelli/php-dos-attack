@@ -19,7 +19,7 @@
     xml_parser_free($p);
     $endTime = microtime(true);
 
-    echo 'Unserializing ', $size, ' evil elements took ', $endTime - $startTime, ' seconds', "\n";
+    echo 'Parsing ', $size, ' evil elements took ', $endTime - $startTime, ' seconds', "\n";
 
     $xml = "<array>";
     foreach($hashes as $key) {
@@ -35,5 +35,5 @@
     xml_parser_free($p);
     $endTime = microtime(true);
 
-    echo 'Unserializing ', $size, ' good elements took ', $endTime - $startTime, ' seconds', "\n";
+    echo 'Parsing ', $size, ' good elements took ', $endTime - $startTime, ' seconds', "\n";
 ?>
