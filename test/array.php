@@ -10,19 +10,19 @@
 
     $startTime = microtime(true);
     $array = array();
-    foreach($hashes as $key) {
-        $array[$key] = 0;
-    }
-    $endTime = microtime(true);
-
-    echo 'Inserting ', $size, ' evil elements took ', $endTime - $startTime, ' seconds', "\n";
-
-    $startTime = microtime(true);
-    $array = array();
     for($key = 0; $key < $size; $key++) {
         $array[strval($key)] = 0;
     }
     $endTime = microtime(true);
 
     echo 'Inserting ', $size, ' good elements took ', $endTime - $startTime, ' seconds', "\n";
+
+    $startTime = microtime(true);
+    $array = array();
+    foreach($hashes as $key) {
+        $array[$key] = 0;
+    }
+    $endTime = microtime(true);
+
+    echo 'Inserting ', $size, ' evil elements took ', $endTime - $startTime, ' seconds', "\n";
 ?>
