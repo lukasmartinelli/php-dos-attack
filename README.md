@@ -19,13 +19,6 @@ Therefore you can visit your site at `localhost:8080`.
 
 ## Run a Hash Collision Attack
 
-You need Python 2.7.
-Install the requirements:
-
-```
-pip install -r requirements.txt
-```
-
 The `attack.py` script will make parallel requests (amount can be specified with `--count`)
 to a URL endpoint. It reads collisions from given text file and tries to do a
 Hash collision Attack with them. You can set the attack type to either use form fields
@@ -34,19 +27,22 @@ or a json map.
 Make one request to the webserver running in the docker container.
 
 ```
-python attack.py http://localhost:8080/index.php collision_keys.txt
+docker run --rm -t lukasmartinelli/php-dos-attack \
+python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt
 ```
 
 Make a normal request to compare with the collision attack.
 
 ```
-python attack.py http://localhost:8080/index.php hashes.txt --no-collide
+docker run --rm -t lukasmartinelli/php-dos-attack \
+python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --no-collide
 ```
 
 Make 100 requests to a fake JSON API.
 
 ```
-python attack.py http://localhost:8080/api.php hashes.txt --count=100 --type=json
+docker run --rm -t lukasmartinelli/php-dos-attack \
+python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --count=100 --type=json
 ```
 
 ## Test PHP vulnerabilities to Collision Attacks
@@ -68,16 +64,24 @@ head -n 10000 collision_keys.txt > collision_keys_small.txt
 Run tests for inserting colliding keys into array:
 
 ```
+docker run -it --rm --name php-dos-attack-array-test \
+-v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/array.php collision_keys.txt
 ```
+
 Run tests for calling `json_decode` for JSON key-value pairs with colliding keys:
 
 ```
+docker run -it --rm --name php-dos-attack-array-test \
+-v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/json_decode.php collision_keys.txt
 ```
+
 Run tests when `unserializing` an array with colliding keys:
 
 ```
+docker run -it --rm --name php-dos-attack-array-test \
+-v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/unserialize.php collision_keys.txt
 ```
 
@@ -85,6 +89,8 @@ Run tests when parsing XML with elements name that should collide with each othe
 into a class with `xml_parse_into_struct`:
 
 ```
+docker run -it --rm --name php-dos-attack-array-test \
+-v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/xml_parse_into_struct.php collision_keys.txt
 ```
 
@@ -93,7 +99,9 @@ php test/xml_parse_into_struct.php collision_keys.txt
 You can generate the plot data used for the diagrams by yourself:
 
 ```
-php plot/array.php collision_keys.txt
+docker run -it --rm --name php-dos-attack-array-test \
+-v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
+php plot/json_decode.php collision_keys.txt
 ```
 
 ![json_decode time compared for collisions](/plot/json_decode_time.png)
