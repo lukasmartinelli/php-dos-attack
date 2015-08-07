@@ -1,24 +1,25 @@
 # Simulate Hash Collision Attack on a PHP Server
 
-[Vagrant](https://www.vagrantup.com/downloads) is used to automatically create
-a PHP webserver VM.
-Vagrant will keep the `server` folder in sync with `/var/www/html` for easy testing.
-You also need [Ansible](http://docs.ansible.com/intro_installation.html) to provision the server.
+Checkout the [associated blog post](http://lukasmartinelli.ch/web/2014/11/17/php-dos-attack-revisited.html).
 
-## Start server
+## How it works
 
+Nowadays every web application uses a JSON API, which is still vulnerable to complexity attacks if you use PHP.
 
-Download and start the VM:
+![Insert Animation](http://lukasmartinelli.ch/media/hash-collisions.gif)
+
+## Run the server
 
 ```
-vagrant up
+docker run -it --rm -p 8080:80 --name php-dos-attack-server -v "$PWD"/server:/var/www/html php:5.6-apache
 ```
 
-Vagrant will map the port `80` of the webserver to `8080`.
+Docker will map the port `80` of the webserver to `8080`.
 Therefore you can visit your site at `localhost:8080`.
 
 ## Run a Hash Collision Attack
 
+You need Python 2.7.
 Install the requirements:
 
 ```
@@ -30,10 +31,10 @@ to a URL endpoint. It reads collisions from given text file and tries to do a
 Hash collision Attack with them. You can set the attack type to either use form fields
 or a json map.
 
-Make one request to the webserver in the VM.
+Make one request to the webserver running in the docker container.
 
 ```
-python attack.py http://localhost:8080/index.php hashes.txt
+python attack.py http://localhost:8080/index.php collision_keys.txt
 ```
 
 Make a normal request to compare with the collision attack.
@@ -42,7 +43,7 @@ Make a normal request to compare with the collision attack.
 python attack.py http://localhost:8080/index.php hashes.txt --no-collide
 ```
 
-Make 100 requests to a fake JSON api.
+Make 100 requests to a fake JSON API.
 
 ```
 python attack.py http://localhost:8080/api.php hashes.txt --count=100 --type=json
