@@ -24,25 +24,26 @@ to a URL endpoint. It reads collisions from given text file and tries to do a
 Hash collision Attack with them. You can set the attack type to either use form fields
 or a json map.
 
-Make one request to the webserver running in the docker container.
+
+Make 100 good normal requests to a fake JSON API.
 
 ```bash
 docker run --rm -t lukasmartinelli/php-dos-attack \
-python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt
+python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --count=100 --type=json --no-collide
 ```
 
-Make a normal request to compare with the collision attack.
-
-```bash
-docker run --rm -t lukasmartinelli/php-dos-attack \
-python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --no-collide
-```
-
-Make 100 requests to a fake JSON API.
+Make 100 bad requests to a fake JSON API.
 
 ```bash
 docker run --rm -t lukasmartinelli/php-dos-attack \
 python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --count=100 --type=json
+```
+
+You can also run the form based attack (which has been fixed by an Appache workaround).
+
+```bash
+docker run --rm -t lukasmartinelli/php-dos-attack \
+python ./attack.py http://172.17.42.1:8080/index.php collision_keys.txt --count=100
 ```
 
 ## Test PHP vulnerabilities to Collision Attacks
