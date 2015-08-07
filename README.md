@@ -45,6 +45,26 @@ docker run -it --rm \
 php test/unserialize.php collision_keys.txt
 ```
 
+#### Different PHP versions
+
+Docker tags for official Docker PHP image:
+
+- `5.4.43-cli`
+- `5.5.27-cli`
+- `5.6.11-cli`
+- `7.0.0beta2-cli`
+
+**Measurements:**
+
+100 samples for each measurement on a `m1.medium` instance.
+
+PHP Version | `array` | `json_decode` | `unserialize`
+------------|---------|---------------|----------------
+5.4.43      |
+5.5.27      |
+5.6.11      |
+7.0.0beta2  |
+
 ## Plot time difference
 
 You can generate the plot data used for the diagrams by yourself:
