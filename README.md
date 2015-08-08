@@ -1,7 +1,5 @@
 # Simulate Hash Collision Attack on a PHP Server
 
-[![](https://badge.imagelayers.io/dreipol/python.svg)](https://imagelayers.io/?images=lukasmartinelli/php-dos-attack:latest)
-
 Checkout the [associated blog post](http://lukasmartinelli.ch/web/2014/11/17/php-dos-attack-revisited.html).
 
 ## How it works
