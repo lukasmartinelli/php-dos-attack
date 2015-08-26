@@ -54,16 +54,30 @@ Docker tags for official Docker PHP image:
 - `5.6.11-cli`
 - `7.0.0beta2-cli`
 
-**Measurements:**
+#### Measurements
 
-100 samples for each measurement on a `m1.medium` instance.
+Median in `seconds` of 100 samples for each measurement on a `m1.medium` instance.
+Note that this is only a portion of evil keys consisting out of 10k keys.
+Imagine what 64k evil keys kan do. 
 
-PHP Version | `array` | `json_decode` | `unserialize`
-------------|---------|---------------|----------------
-5.4.43      |
-5.5.27      |
-5.6.11      |
-7.0.0beta2  |
+**Good:**
+
+PHP Version | `array`     | `json_decode` | `unserialize`
+------------|-------------|---------------|----------------
+5.4.43      | 0,0033      | 0,0022        | 0,0022
+5.5.27      |             | 0,0019        | 
+5.6.11      |             | 0,0019
+7.0.0beta2  |             | 0,0009
+
+**Evil:**
+
+PHP Version | `array`     | `json_decode` | `unserialize`
+------------|-------------|---------------|----------------
+5.4.43      | 1,2470      | 1,3896        | 1,3896
+5.5.27      |             | 1,4049
+5.6.11      |             | 1,3999
+7.0.0beta2  |             | 0,3737
+
 
 ## Plot time difference
 
